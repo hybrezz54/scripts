@@ -12,19 +12,19 @@ def process_file(file):
 
     # iterate over rows
     for idx, row in df.iterrows():
-        appt_type = row['Appt Type'].lower*()
-        comment = row['Comments'].lower()
+        appt_type = str(row['Appt Type']).lower()
+        comment = str(row['Comments']).lower()
 
         # search appropriate columns and append new column
         if 'fbw' in appt_type or 'fbw' in comment or 'fasting' in comment:
-            row['Message #'] = 2
+            df.loc[idx, 'Message #'] = 2
         else:
-            row['Message #'] = 1
+            df.loc[idx, 'Message #'] = 1
 
-    df.to_csv(file)
+    # write to csv file
+    df.to_csv(file, index=False)
 
-# check if main thread
-if __name__ == '__main__':
+def main():
     # try processing file
     try:
         # get the filename
@@ -36,7 +36,7 @@ if __name__ == '__main__':
             return
 
         # exit if not confirmed
-        if input('Confirm processing file')[0].lower() != 'y':
+        if input('Confirm processing file? ')[0].lower() != 'y':
             return
         
         # continue processing
@@ -46,3 +46,7 @@ if __name__ == '__main__':
 
     except IndexError:
         print('Usage: call_reminder.py [file.csv]')
+
+# check if main thread
+if __name__ == '__main__':
+    main()
