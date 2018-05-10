@@ -79,10 +79,12 @@ If ($spotify -eq $false -Or $slack -eq $false) {
 }
 
 # Change working directory to my documents
-Set-Location -Path "C:\Users\hamza\Documents"
+$dir = [Environment]::GetFolderPath('MyDocuments')
+Set-Location -Path $dir
 
 # Clone the scripts repo from Github
 git clone https://github.com/hybrezz54/scripts.git
 
 # Add scripts directory to user's PATH
-[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Users\hamza\Documents\scripts", "User")
+$path = [Environment]::GetEnvironmentVariable("Path", "User")
+[Environment]::SetEnvironmentVariable("Path", $path + $dir + "\scripts", "User")
