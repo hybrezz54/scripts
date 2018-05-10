@@ -9,42 +9,47 @@ If ($policy -eq 'Restricted') {
 # Install Chocolatey - a Windows package manager
 Write-Host "Installing Chocolatey..."
 # Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://Chocolatey.org/install.ps1'))
-Write-Host "Done`n"
+Write-Host "Done`n" -ForegroundColor Green
 
 # Upgrade Chocolatey just in case
 Write-Host "Upgrading Chocolatey..."
 choco upgrade chocolatey
-Write-Host "Done`n"
+Write-Host "Done`n" -ForegroundColor Green
+
+# Install Git for Windows
+Write-Host "Installing Git for Windows..."
+choco install git.install
+Write-Host "Done`n" -ForegroundColor Green
 
 # Install VS Code
 Write-Host "Installing Visual Studio Code..."
 choco install visualstudiocode
-Write-Host "Done`n"
+Write-Host "Done`n" -ForegroundColor Green
 
 # Install Python 3
 Write-Host "Installing Python 3..."
 choco install python
-Write-Host "Done`n"
+Write-Host "Done`n" -ForegroundColor Green
 
 # Install Putty
 Write-Host "Installing Putty..."
 choco install putty.install
-Write-Host "Done`n"
+Write-Host "Done`n" -ForegroundColor Green
 
 # Install WinSCP
 Write-Host "Installing WinSCP..."
 choco install winscp.install
-Write-Host "Done`n"
+Write-Host "Done`n" -ForegroundColor Green
 
 # Install Steam
 Write-Host "Installing Steam..."
 choco install steam
-Write-Host "Done`n"
+Write-Host "Done`n" -ForegroundColor Green
 
 # Install Discord
 Write-Host "Installing Discord..."
 choco install discord
-Write-Host "Done`n"
+Write-Host "Done`n" -ForegroundColor Green
 
 # Check if Spotify is installed
 Write-Host "Checking if Spotify and Slack are installed..."
@@ -73,3 +78,11 @@ If ($spotify -eq $false -Or $slack -eq $false) {
     explorer.exe shell:AppsFolder\Microsoft.WindowsStore_8wekyb3d8bbwe!App
 }
 
+# Change working directory to my documents
+Set-Location -Path "C:\Users\hamza\Documents"
+
+# Clone the scripts repo from Github
+git clone https://github.com/hybrezz54/scripts.git
+
+# Add scripts directory to user's PATH
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Users\hamza\Documents\scripts", "User")
