@@ -21,8 +21,12 @@ def process_file(file):
         else:
             df.loc[idx, 'Message #'] = 1
 
+    # reformat appt time
+    df['Appt DateTime'] = pd.to_datetime(df['Appt DateTime'])
+    df['Appt DateTime'] = df['Appt DateTime'].apply(lambda x: x.strftime('%m/%d/%Y %H:%M').lstrip("0").replace(" 0", " "))
+
     # write to csv file
-    df.to_csv(file, index=False)
+    df.to_csv(file, index=False, date_format='')
 
 def main():
     # try processing file
