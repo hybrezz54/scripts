@@ -1,3 +1,3 @@
 :: Updates all chocolatey packages as an Administrator
-runas /user:Administrator "choco upgrade all"
+choco upgrade all -y
 timeout /t 10
