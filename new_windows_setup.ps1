@@ -16,6 +16,11 @@ Write-Host "Upgrading Chocolatey..."
 choco upgrade chocolatey
 Write-Host "Done`n" -ForegroundColor Green
 
+# Install Firefox
+Write-Host "Installing Firefox..."
+choco install firefox
+Write-Host "Done`n" -ForegroundColor Green
+
 # Install Git for Windows
 Write-Host "Installing Git for Windows..."
 choco install git.install
