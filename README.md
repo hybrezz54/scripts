@@ -10,3 +10,4 @@ Here is a list of the scripts and their descriptions:
 * **dir_cleanup.py:** A python script to clean up unneeded files, for example, in a Downloads folder.
 * **event_scraper.py:** *Work in progress*
 * **slumber.py:** *Work in progress*
+* **trash_schedule.py:** *Work in progress*
