@@ -68,7 +68,11 @@ def process_holiday():
     # parse html
     soup = BeautifulSoup(resource.text, 'html.parser')
 
-    # TODO find holiday changes
+    # iterate over holiday changes
+    for item in soup.find_all('li', text=re.compile('(Monday|Tuesday|Wednesday|Thursday|Friday)+')):
+        # check if contains appropriate month
+        if today.month in item.text:
+            print(item.text.strip(' ;'))
 
 # check if main thread
 if __name__ == '__main__':
