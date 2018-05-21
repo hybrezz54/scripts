@@ -8,7 +8,12 @@ in the trash collection schedule due to holidays.
 import re
 from datetime import datetime
 import requests
+import io
 from bs4 import BeautifulSoup
+import PyPDF2
+
+# URL for main site of schedule
+BASE_URL = "http://www.townofcary.org"
 
 # URL for the recycling schedule
 RECYCLING_URL = "http://www.townofcary.org/services-publications/garbage-recycling-yard-waste/recycling"
@@ -54,8 +59,13 @@ def process_recycling():
     for link in soup.find_all('a', text=re.compile(f'({week})+')):
         # check if contains appropriate year
         if str(today.year) in link.text:
-            # TODO process pdf
-            pass
+            # process pdf
+            resource = requests.get(BASE_URL + link.get('href'))
+            stream = io.BytesIO(resource.content)
+            pdf = PyPDF2.PdfFileReader(stream)
+            # TODO parse PDF
+            print(pdf.getPage(0).extractText())
+            
 
 def process_holiday():
     """Obtains the results for the holiday schedule."""
@@ -71,7 +81,7 @@ def process_holiday():
     # iterate over holiday changes
     for item in soup.find_all('li', text=re.compile('(Monday|Tuesday|Wednesday|Thursday|Friday)+')):
         # check if contains appropriate month
-        if today.month in item.text:
+        if str(today.month) in item.text:
             print(item.text.strip(' ;'))
 
 # check if main thread
