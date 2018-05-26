@@ -6,9 +6,16 @@ in the trash collection schedule due to holidays.
 """
 
 import re
-from datetime import datetime
+import time
+from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
+
+# time in seconds in 1 week
+WEEK = 604800
+
+# file for saved data
+DATA_FILE = "trash_schedule_data.txt"
 
 # URL for the holiday schedule
 HOLIDAY_URL = "http://www.townofcary.org/services-publications/garbage-recycling-yard-waste/garbage-collection/holiday-schedule"
@@ -28,19 +35,32 @@ def main():
 def process_recycling():
     """Obtains the results for the correct recycling schedule."""
 
-    # download html for recycling schedule
-    print('Downloading page ...')
-    
-    # get correct schedule from user
-    week = input("Type 'b' for Blue Week and 'y' for Yellow Week: ")[0].lower()
+    # try to access saved data
+    try:
+        with open(DATA_FILE) as f:
+            date = datetime.fromtimestamp(f.readline())
 
-    # parse input
-    if week == 'b':
-        week = 'Blue'
-    elif week == 'y':
-        week = 'Yellow'
+    # prompt user for current week
+    except IOError:
+        with open(DATA_FILE, 'a') as f:
+            if input('Will the recycling be picked up this week? ')[0].lower() == 'y':
+                date = datetime.now()
+                f.write(time.time())
+            else:
+                date = datetime.fromtimestamp(time.time() + WEEK)
+                f.write(time.time() + WEEK)
+
+    # clean dates
+    current = datetime.now()
+    current = current - timedelta(days=current.weekday())
+    date = date - timedelta(days=date.weekday())
+
+    # calculate when next recycling week
+    weeks = (current - date).days / 7
+    if (weeks % 2) == 0:
+        print('The recycling will go this week!')
     else:
-        raise ValueError("Input must be 'b' or 'y'!")
+        print('The recycling will go next week!')
 
 def process_holiday():
     """Obtains the results for the holiday schedule."""
