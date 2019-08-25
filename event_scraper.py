@@ -1,19 +1,24 @@
-import urllib3
+import sys
+import requests
 from bs4 import BeautifulSoup
+# from oauth2client import client
+# from googleapiclient import sample_tools
 
-# define variables
-http = urllib3.PoolManager()
+urls = [
+    'http://web.carychamber.com/events?oe=true'
+]
 
-def http_get(url):
-    """
-    Attempts to get the content at `url` by making an HTTP GET request.
-    If the content-type of response is some kind of HTML/XML, return the
-    text content, otherwise return None
-    """
-    r = http.request('GET', url)
-    data = r.data
+def main():
+    # iterate over urls
+    for url in urls:
+        # download html
+        print(f'Downloading page {url}...')
+        resource = requests.get(url)
+        resource.raise_for_status()
 
-    if r.status == 200 and data is not None and data.find('html') > -1:
-        return data
-    else:
-        return None
+        # parse html
+        soup = BeautifulSoup(resource.text, 'html.parser')
+
+# check if main thread
+if __name__ == '__main__':
+    main()
